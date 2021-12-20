@@ -1,0 +1,9 @@
+.box {
+  background-color: white;
+  width: 400px;
+  height: 500px;
+  border-radius: 8px;
+}
+.textField {
+  margin: 23px;
+}
