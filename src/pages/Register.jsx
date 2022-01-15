@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './register.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Box, Button } from '@mui/material';
 import { register } from '../api/database';
 
@@ -10,6 +10,9 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [badData, setBadData] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -33,45 +36,44 @@ const Register = () => {
     else return false;
   };
 
+  const onBadData = () => {
+    setBadData(true);
+    setEmail('');
+    setLogin('');
+    setPassword('');
+    setRepeatPassword('');
+  };
+
   const handleButtonClick = async () => {
     if (email != '' && login != '' && checkPasswords()) {
       setBadData(false);
       const res = await register(login, email, password);
-      console.log(res);
+      if (res) {
+        navigate('../mylist');
+      } else {
+        onBadData();
+      }
     } else {
-      setBadData(true);
-      setEmail('');
-      setLogin('');
-      setPassword('');
-      setRepeatPassword('');
+      onBadData();
     }
   };
 
-  /*const handleRegistration = () => {
-    const createUser = async (user) => {
-      await database.setUser({
-        uid: user.uid,
-        email: email,
-        name: data.name,
-        surname: data.surname,
-        birthDate: data.birthDate,
-        profilePicture: profilePicture,
-        backgroundPicture: backgroundPicture,
-      });
-    };
-
-    if (data.password === data.passwordConfirm) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(data.email, data.password)
-        .then((result) => {
-          createUser(result.user);
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+  useEffect(() => {
+    if (
+      buttonDisabled &&
+      email != '' &&
+      login != '' &&
+      password != '' &&
+      repeatPassword != ''
+    ) {
+      setButtonDisabled(false);
+    } else if (
+      !buttonDisabled &&
+      (email == '' || login == '' || password == '' || repeatPassword == '')
+    ) {
+      setButtonDisabled(true);
     }
-  };*/
+  }, [email, login, password, repeatPassword]);
 
   return (
     <div>
@@ -109,11 +111,12 @@ const Register = () => {
             onChange={handleRepeatPasswordChange}
           />
         </div>
-        <Link to='/register'>
-          <Button variant='contained' onClick={handleButtonClick}>
-            Register
-          </Button>
-        </Link>
+        <Button
+          variant='contained'
+          onClick={handleButtonClick}
+          disabled={buttonDisabled}>
+          Register
+        </Button>
         {badData && <p>Some data was incorrect!</p>}
       </Box>
     </div>

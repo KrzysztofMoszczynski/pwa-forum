@@ -4,6 +4,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
+  browserSessionPersistence,
+  setPersistence,
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -23,12 +26,19 @@ import { firebaseConfig } from './firebaseConfig';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore(app);
-let currentUser = null;
+let currentUser = auth.currentUser;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+  } else {
+    currentUser = null;
+  }
+});
 
 const register = async (username, email, password) => {
   try {
     await createUserWithEmailAndPassword(auth, email, password).then((res) => {
-      currentUser = res.user;
       setDoc(doc(db, 'users', res.user.uid), {
         username: username,
         email: email,
@@ -43,9 +53,8 @@ const register = async (username, email, password) => {
 
 const signIn = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password).then((res) => {
-      currentUser = res.user;
-    });
+    await setPersistence(auth, browserSessionPersistence);
+    await signInWithEmailAndPassword(auth, email, password);
     return true;
   } catch (err) {
     console.error(err);
@@ -69,7 +78,15 @@ const getCurrentUserData = async () => {
 
 const logout = () => {
   signOut(auth);
-  currentUser = null;
+};
+
+const isLoggedIn = () => {
+  console.log(currentUser);
+  if (currentUser) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const addItemToList = async (item) => {
@@ -84,7 +101,28 @@ const addItemToList = async (item) => {
   }
 };
 
-export { auth, signIn, register, getCurrentUserData, logout, addItemToList };
+const deleteItemFromList = async (item) => {
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      todolist: arrayRemove(item),
+    });
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+export {
+  auth,
+  signIn,
+  register,
+  getCurrentUserData,
+  logout,
+  addItemToList,
+  deleteItemFromList,
+  isLoggedIn,
+};
 /*const database = {
   initialize(db) {
     this.db = db;

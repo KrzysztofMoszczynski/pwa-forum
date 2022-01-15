@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import MyList from './pages/MyList';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import RequireAuth from './helpers/RequireAuth';
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
@@ -15,6 +17,14 @@ ReactDOM.render(
       <Route path='/' element={<App />} />
       <Route path='register' element={<Register />} />
       <Route path='login' element={<Login />} />
+      <Route
+        path='mylist'
+        element={
+          <RequireAuth redirectTo={'/'}>
+            <MyList />
+          </RequireAuth>
+        }
+      />
     </Routes>
   </BrowserRouter>,
   rootElement
