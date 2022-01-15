@@ -1,0 +1,28 @@
+.postStyle {
+  background-color: 'colors.AWS_whiteish';
+  border-radius: 4px;
+  margin: '40px';
+  padding-left: '20px';
+  padding-top: '3px';
+  padding-bottom: '75px';
+  padding-right: '20px';
+  box-shadow: '0 10px 30px -10px rgba(0,0,0,0.1)';
+}
+.timeAndNameStyle {
+  line-height: '5px';
+  margin-bottom: '30px';
+}
+.outerButtonStyle {
+  float: 'right';
+  padding-right: 0;
+}
+.comment {
+  width: 600;
+}
+.username {
+  margin-top: 8;
+  color: '#565656';
+}
+.image {
+  text-align: 'center';
+}

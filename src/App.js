@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Link, Outlet } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './api/firebaseConfig';
-import Login from './pages/Login';
+import { Button } from '@mui/material';
+import MyList from './components/components/MyList';
 import './App.css';
 
 initializeApp(firebaseConfig);
@@ -11,8 +13,10 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <Login />
+        <Link to='/register'>Register</Link>
+        <Link to='/login'>Login</Link>
       </header>
+      <Outlet />
     </div>
   );
 }
