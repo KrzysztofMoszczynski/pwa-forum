@@ -42,6 +42,7 @@ const register = async (username, email, password) => {
       setDoc(doc(db, 'users', res.user.uid), {
         username: username,
         email: email,
+        todolist: [],
       });
     });
     return true;
@@ -66,7 +67,7 @@ const getCurrentUserData = async () => {
   if (currentUser) {
     try {
       const data = await getDoc(doc(db, 'users', currentUser.uid));
-      return data;
+      return data._document.data.value.mapValue.fields;
     } catch (err) {
       console.error(err);
       return null;

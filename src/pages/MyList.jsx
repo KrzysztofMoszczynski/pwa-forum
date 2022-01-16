@@ -22,14 +22,13 @@ const MyList = () => {
   const navigate = useNavigate();
 
   const addElement = (value) => {
-    console.log(typeof elements);
     let newList = [...elements, value];
     setElements(newList);
     addItemToList(value);
   };
 
   const handleDelete = (index) => {
-    let newArray = elements;
+    let newArray = [...elements];
     const item = newArray[index];
     newArray.splice(index, 1);
     setElements(newArray);
@@ -41,20 +40,26 @@ const MyList = () => {
     navigate('..');
   };
 
+  const fetchData = async () => {
+    const data = await getCurrentUserData();
+    if (data.todolist) {
+      const todoList = data.todolist.arrayValue.values;
+      const fetchedArr = todoList.map((element) => {
+        return element.stringValue;
+      });
+      setElements(fetchedArr);
+      setIsLoaded(true);
+    }
+  };
+
   useEffect(() => {
-    getCurrentUserData().then((res) => {
-      if (res) {
-        const todoList = res.todolist;
-        setElements(todoList);
-        setIsLoaded(true);
-      }
-    });
+    fetchData();
   }, []);
 
   if (isLoaded) {
     return (
       <div>
-        {elements && elements.length && (
+        {elements && elements.length > 0 && (
           <List className={styles.listStyle}>
             {elements.map((element, index) => (
               <ListItem
