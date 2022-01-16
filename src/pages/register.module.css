@@ -1,3 +1,7 @@
+.window {
+  display: flex;
+  justify-content: center;
+}
 .box {
   text-align: center;
   display: flex;

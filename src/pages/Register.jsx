@@ -76,7 +76,7 @@ const Register = () => {
   }, [email, login, password, repeatPassword]);
 
   return (
-    <div>
+    <div className={styles.window}>
       <Box className={styles.box}>
         <span className={styles.welcomeText}>Sign up here!</span>
         <div>

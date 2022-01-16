@@ -58,34 +58,39 @@ const MyList = () => {
 
   if (isLoaded) {
     return (
-      <div>
-        {elements && elements.length > 0 && (
-          <List className={styles.listStyle}>
-            {elements.map((element, index) => (
-              <ListItem
-                key={element}
-                className={styles.textStyle}
-                secondaryAction={
-                  <IconButton
-                    edge='end'
-                    aria-label='delete'
-                    onClick={() => handleDelete(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                }>
-                <ListItemText primary={element} />
-              </ListItem>
-            ))}
-          </List>
-        )}
-        <ComponentAdder addElement={addElement} />
-        <Button variant='outlined' onClick={onLogout}>
-          Log out
-        </Button>
+      <div className={styles.window}>
+        <div className={styles.box}>
+          {elements && elements.length > 0 && (
+            <List className={styles.listStyle}>
+              {elements.map((element, index) => (
+                <ListItem
+                  key={element}
+                  className={styles.textStyle}
+                  secondaryAction={
+                    <IconButton
+                      edge='end'
+                      aria-label='delete'
+                      onClick={() => handleDelete(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }>
+                  <ListItemText primary={element} />
+                </ListItem>
+              ))}
+            </List>
+          )}
+          <ComponentAdder addElement={addElement} />
+          <Button
+            variant='outlined'
+            onClick={onLogout}
+            className={styles.logoutButton}>
+            Log out
+          </Button>
+        </div>
       </div>
     );
   } else {
-    return <div>Loading...</div>;
+    return <div className={styles.window}>Loading...</div>;
   }
 };
 
