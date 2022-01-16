@@ -18,21 +18,32 @@ import {
 const MyList = () => {
   const [elements, setElements] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [updateFailed, setUpdateFailed] = useState(false);
 
   const navigate = useNavigate();
 
-  const addElement = (value) => {
+  const addElement = async (value) => {
     let newList = [...elements, value];
-    setElements(newList);
-    addItemToList(value);
+    const res = await addItemToList(value);
+    if (res) {
+      setElements(newList);
+      setUpdateFailed(false);
+    } else {
+      setUpdateFailed(true);
+    }
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = async (index) => {
     let newArray = [...elements];
     const item = newArray[index];
     newArray.splice(index, 1);
-    setElements(newArray);
-    deleteItemFromList(item);
+    const res = await deleteItemFromList(item);
+    if (res) {
+      setElements(newArray);
+      setUpdateFailed(false);
+    } else {
+      setUpdateFailed(true);
+    }
   };
 
   const onLogout = async () => {
@@ -80,6 +91,11 @@ const MyList = () => {
             </List>
           )}
           <ComponentAdder addElement={addElement} />
+          {updateFailed && (
+            <p>
+              The update failed. There may be a problem with your connection
+            </p>
+          )}
           <Button
             variant='outlined'
             onClick={onLogout}
