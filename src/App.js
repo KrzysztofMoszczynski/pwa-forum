@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './api/firebaseConfig';
-import { Button } from '@mui/material';
 import './App.css';
 
 initializeApp(firebaseConfig);

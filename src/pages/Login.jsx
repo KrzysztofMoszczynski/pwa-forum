@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './login.module.css';
 import { TextField, Box, Button } from '@mui/material';
 import { signIn } from '../api/database';
@@ -40,9 +40,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (loginDisabled && (email != '') & (password != '')) {
+    if (loginDisabled && (email !== '') & (password !== '')) {
       setLoginDisabled(false);
-    } else if (!loginDisabled && (email == '' || password == '')) {
+    } else if (!loginDisabled && (email === '' || password === '')) {
       setLoginDisabled(true);
     }
   }, [email, password]);

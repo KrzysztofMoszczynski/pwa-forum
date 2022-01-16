@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import Register from './pages/Register';
@@ -9,24 +9,49 @@ import MyList from './pages/MyList';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import RequireAuth from './helpers/RequireAuth';
+import RequireLogOut from './helpers/RequireLogOut';
+import { AuthProvider } from './context/Auth';
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<App />} />
-      <Route path='register' element={<Register />} />
-      <Route path='login' element={<Login />} />
-      <Route
-        path='mylist'
-        element={
-          <RequireAuth redirectTo={'/'}>
-            <MyList />
-          </RequireAuth>
-        }
-      />
-    </Routes>
-  </BrowserRouter>,
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <RequireLogOut redirectTo={'/mylist'}>
+              <App />
+            </RequireLogOut>
+          }
+        />
+        <Route
+          path='register'
+          element={
+            <RequireLogOut redirectTo={'/mylist'}>
+              <Register />
+            </RequireLogOut>
+          }
+        />
+        <Route
+          path='login'
+          element={
+            <RequireLogOut redirectTo={'/mylist'}>
+              <Login />
+            </RequireLogOut>
+          }
+        />
+        <Route
+          path='mylist'
+          element={
+            <RequireAuth redirectTo={'/'}>
+              <MyList />
+            </RequireAuth>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>,
   rootElement
 );
 

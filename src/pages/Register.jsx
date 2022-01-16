@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './register.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { TextField, Box, Button } from '@mui/material';
 import { register } from '../api/database';
 
@@ -31,7 +31,7 @@ const Register = () => {
   };
 
   const checkPasswords = () => {
-    if (password != '' && repeatPassword != '' && password == repeatPassword)
+    if (password !== '' && repeatPassword !== '' && password === repeatPassword)
       return true;
     else return false;
   };
@@ -45,7 +45,7 @@ const Register = () => {
   };
 
   const handleButtonClick = async () => {
-    if (email != '' && login != '' && checkPasswords()) {
+    if (email !== '' && login !== '' && checkPasswords()) {
       setBadData(false);
       const res = await register(login, email, password);
       if (res) {
@@ -61,15 +61,15 @@ const Register = () => {
   useEffect(() => {
     if (
       buttonDisabled &&
-      email != '' &&
-      login != '' &&
-      password != '' &&
-      repeatPassword != ''
+      email !== '' &&
+      login !== '' &&
+      password !== '' &&
+      repeatPassword !== ''
     ) {
       setButtonDisabled(false);
     } else if (
       !buttonDisabled &&
-      (email == '' || login == '' || password == '' || repeatPassword == '')
+      (email === '' || login === '' || password === '' || repeatPassword === '')
     ) {
       setButtonDisabled(true);
     }
