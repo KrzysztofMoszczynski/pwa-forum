@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import { Link, Outlet } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './api/firebaseConfig';
